@@ -2,14 +2,14 @@
   "name": "Filmoteka",
   "version": "2.0.0",
   "description": "",
-  "homepage": "https://Reqvite.github.io/Filmoteka",
+  "homepage": "https://taras-novitskyi.github.io/Filmoteka",
   "scripts": {
     "start": "parcel src/*.html --public-url /Filmoteka/",
     "build": "parcel build src/*.html --public-url /Filmoteka/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Reqvite/Filmoteka.git"
+    "url": "git+https://github.com/Taras-Novitskyi/Filmoteka.git"
   },
   "keywords": [],
   "author": "GoIt team",
