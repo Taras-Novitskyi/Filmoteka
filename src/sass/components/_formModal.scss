@@ -54,6 +54,7 @@
   margin-top: 10px;
   border: none;
   border-radius: 5px;
+  padding: 10px;
 }
 
 .signin-Btn {
@@ -116,13 +117,12 @@
 
 .submit-signUp-btn,
 .submit-login-btn {
-  // display: none;
   color: black;
   background-color: $accentBg-color;
   border: none;
   border-radius: 5px;
-  height: 30px;
-  min-width: 70px;
+  height: 36px;
+  min-width: 90px;
   cursor: pointer;
   padding: 5px;
   margin-top: 10px;

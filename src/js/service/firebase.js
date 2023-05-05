@@ -1,14 +1,27 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-import { initializeApp } from "firebase/app";
-import { getDatabase, set, ref, enableLogging, update,child, get, onDisconnect} from "firebase/database";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import { initializeApp } from 'firebase/app';
+import {
+  getDatabase,
+  set,
+  ref,
+  enableLogging,
+  update,
+  child,
+  get,
+  onDisconnect,
+} from 'firebase/database';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from 'firebase/auth';
 
-
-import { switchToHome } from './changeHeaderPageHome-Mylibrary'; 
+import { switchToHome } from './changeHeaderPageHome-Mylibrary';
 import { fetchTrendingFilms } from './collection';
 import { refs } from '../refs/refs';
-
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAmrcw3LWh5vdrPE40gh2Uggxq3EG96Lys',
@@ -21,14 +34,14 @@ const firebaseConfig = {
   appId: '1:394290136676:web:9848416d6de87eb2614171',
 };
 
-const list = document.querySelector('.container-films') 
+const list = document.querySelector('.container-films');
 function listAnimation() {
   setTimeout(() => {
-    list.style.top = '0'
-    list.style.opacity ='1'
-  },150)
+    list.style.top = '0';
+    list.style.opacity = '1';
+  }, 150);
 }
-listAnimation()
+listAnimation();
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -36,7 +49,6 @@ export const database = getDatabase(app);
 const auth = getAuth();
 const user = auth.currentUser;
 const dt = new Date();
-
 
 //modal open-close
 const modal = document.querySelector('.backdrop-form');
@@ -49,8 +61,7 @@ const formTitle = document.querySelector('.form-title');
 
 const myLibraryJs = document.querySelector('.my-library-js');
 
-
-//Проверка залогинен пользователь или нет
+//Is user log in or not
 function userIsLogin() {
   const userIsLogin = localStorage.getItem('userIsLogin');
   const userIsLoginParse = JSON.parse(userIsLogin);
@@ -94,7 +105,7 @@ function closeModalOutsideWindow(e) {
   closeFormModal();
 }
 
-//Открытие модалки(регистрация)
+//Open modal(registry)
 refs.signinBtn.addEventListener('click', e => {
   modal.classList.remove('form-hidden');
   nameInput.style.display = 'block';
@@ -106,7 +117,7 @@ refs.signinBtn.addEventListener('click', e => {
   modal.addEventListener('click', closeModalOutsideWindow);
 });
 
-//Регистрация пользователя
+//User registration 
 function signUpUser(e) {
   e.preventDefault();
   const username = formRegistr.elements[0].value;
@@ -146,8 +157,7 @@ function signUpUser(e) {
   e.target.reset();
 }
 
-//Открытие модалки(логин)
-
+//Open modal(login)
 refs.loginBtn.addEventListener('click', e => {
   formRegistr.addEventListener('submit', logInUser);
   formTitle.textContent = 'LOG IN TO FILMOTEKA';
@@ -160,7 +170,7 @@ refs.loginBtn.addEventListener('click', e => {
   modal.addEventListener('click', closeModalOutsideWindow);
 });
 
-//Логинизация
+//Login
 function logInUser(e) {
   e.preventDefault();
 
@@ -225,36 +235,10 @@ function handleLogIn() {
   refs.body.style.overflow = 'scroll';
 }
 
-//Получение данных если пользоваетль залогинен
-// onAuthStateChanged(auth, user => {
-//   if (user) {
-//     // User is signed in, see docs for a list of available properties
-//     // https://firebase.google.com/docs/reference/js/firebase.User
-//     const uid = user.uid;
-//     const dbRef = ref(getDatabase());
-//     localStorage.setItem('userId', uid);
-//     get(child(dbRef, `users/${uid}`))
-//       .then(snapshot => {
-//         if (snapshot.exists()) {
-//           console.log(snapshot.val());
-//         } else {
-//           console.log('No data available');
-//         }
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       });
-//     // ...
-//   } else {
-//     // User is signed out
-//     // ...
-//   }
-// });
-
-//Выйти из аккаунта
+//Logout
 refs.logOut.addEventListener('click', e => {
-     if (e.target.nodeName === 'LI' || e.target.nodeName === 'UL') {
-    return
+  if (e.target.nodeName === 'LI' || e.target.nodeName === 'UL') {
+    return;
   }
   signOut(auth)
     .then(() => {
@@ -287,12 +271,12 @@ function removeEventListeners() {
   formRegistr.removeEventListener('submit', logInUser);
 }
 
+document.addEventListener('click', checkConection);
 
-document.addEventListener('click', checkConection)
-
-function checkConection(){
- if (!navigator.onLine) {
-   refs.sectionMain.outerHTML = '<p class="error-title">Check your connection and please reload the page.<p>';
-   refs.errorImg.style.display = 'block';
+function checkConection() {
+  if (!navigator.onLine) {
+    refs.sectionMain.outerHTML =
+      '<p class="error-title">Check your connection and please reload the page.<p>';
+    refs.errorImg.style.display = 'block';
   }
 }

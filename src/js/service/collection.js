@@ -6,7 +6,6 @@ import { refs } from '../refs/refs';
 
 export { fetchTrendingFilms };
 
-// let page = 1;
 let genreCollection = {};
 localStorage.setItem('currentPage', '1');
 

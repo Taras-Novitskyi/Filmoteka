@@ -1,6 +1,6 @@
 import * as image from '../../images/collection/csaff-no-poster.jpg';
-export function renderMarkUp(arrMovies, genreCollection) {
 
+export function renderMarkUp(arrMovies, genreCollection) {
   return arrMovies
     .map(
       ({ poster_path, genre_ids, title, release_date, id, vote_average }) => {

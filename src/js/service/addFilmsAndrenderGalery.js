@@ -1,13 +1,13 @@
-import FilmsApiServer from './fimlsApiServer';
 import Notiflix from 'notiflix';
-import updateMarkupPagination from '../componets/pagination';
+
+import * as image from '../../images/searchError.jpg';
+import FilmsApiServer from './fimlsApiServer';
 import { fetchGenreId } from './collectionFetch';
 import { renderMarkUp } from '../markups/collectionRender';
 import { refs } from '../refs/refs';
 import { spinner } from '../componets/spinner';
+import updateMarkupPagination from '../componets/pagination';
 import renderSubFilterMarkup from '../markups/renderSubFilterMarkup';
-import * as image from '../../images/searchError.jpg';
-import { async } from '@firebase/util';
 
 const filmsApiServer = new FilmsApiServer();
 
@@ -145,10 +145,10 @@ async function renderAfterChangingPage(currentPage) {
       data = await filmsApiServer.fetchFimsSorting();
     } else if (filmsApiServer.primary_release_year) {
       data = await filmsApiServer.fetchFilmsYear();
-    }
-    {
+    } else {
       data = await filmsApiServer.fetchFilms();
     }
+    
     const { results, page, total_pages } = data;
     const render = renderMarkUp(results, genreCollection);
 
@@ -204,7 +204,6 @@ function clearContainer(element) {
 }
 
 function onFetchError(err) {
-  console.log(err);
   clearContainer(refs.gallery);
   return;
 }
