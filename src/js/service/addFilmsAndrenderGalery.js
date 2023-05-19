@@ -22,6 +22,7 @@ fetchGenreId()
 
 refs.form.addEventListener('submit', onSubmitForm);
 refs.filterButtons.addEventListener('click', onClickFilterButtons);
+refs.body.addEventListener('click', closeFilterList);
 
 function onSubmitForm(e) {
   e.preventDefault();
@@ -48,9 +49,19 @@ function onSubmitForm(e) {
 
 function onClickFilterButtons(e) {
   filmsApiServer.activeSearch = e.target.name;
+  const currentFilterListItem = document.querySelector('.sub-filter__item');
+
   if (filmsApiServer.activeSearch === 'genre') {
     filmsApiServer.sortVariety = '';
     filmsApiServer.primary_release_year = '';
+
+    if (currentFilterListItem) {
+      const filterList = currentFilterListItem.parentElement;
+
+      filterList.previousElementSibling.style.color = '#000000';
+      clearContainer(filterList);
+    }
+
     const currentFilterButton = refs.genreButton;
     const objSubFilterDataKeys = Object.keys(genreCollection);
     const objSubFilterDataValues = Object.values(genreCollection);
@@ -64,6 +75,14 @@ function onClickFilterButtons(e) {
   if (filmsApiServer.activeSearch === 'sort') {
     filmsApiServer.genreId = '';
     filmsApiServer.primary_release_year = '';
+
+    if (currentFilterListItem) {
+      const filterList = currentFilterListItem.parentElement;
+
+      filterList.previousElementSibling.style.color = '#000000';
+      clearContainer(filterList);
+    }
+
     const currentFilterButton = refs.sortButton;
     const objSubFilterDataKeys = [
       'popularity.desc',
@@ -92,14 +111,22 @@ function onClickFilterButtons(e) {
   if (filmsApiServer.activeSearch === 'year') {
     filmsApiServer.genreId = '';
     filmsApiServer.sortVariety = '';
+
+    if (currentFilterListItem) {
+      const filterList = currentFilterListItem.parentElement;
+
+      filterList.previousElementSibling.style.color = '#000000';
+      clearContainer(filterList);
+    }
+
     const currentFilterButton = refs.yearButton;
     const today = new Date();
     const currentYear = today.getFullYear();
     const objSubFilterDataValues = [];
     const objSubFilterDataKeys = [];
     for (let i = 1874; i <= currentYear; i += 1) {
-      objSubFilterDataKeys.push(i);
-      objSubFilterDataValues.push('' + i);
+      objSubFilterDataKeys.unshift(i);
+      objSubFilterDataValues.unshift('' + i);
     }
     createSubFilterMarkup(
       currentFilterButton,
@@ -148,7 +175,7 @@ async function renderAfterChangingPage(currentPage) {
     } else {
       data = await filmsApiServer.fetchFilms();
     }
-    
+
     const { results, page, total_pages } = data;
     const render = renderMarkUp(results, genreCollection);
 
@@ -248,5 +275,32 @@ function createSubFilterMarkup(filterButton, dataKeys, dataValues) {
     filterButton.style.color = '#000000';
     clearContainer(filterButton.nextElementSibling);
     return;
+  }
+}
+
+function closeFilterList(e) {
+  const currentFilterListItem = document.querySelector('.sub-filter__item');
+  const currentFilterButton = refs.sortButton;
+  const currentFilterButton2 = refs.genreButton;
+  const currentFilterButton3 = refs.yearButton;
+
+  const isBackdropClick =
+    e.target !== refs.sortButton &&
+    e.target !== refs.genreButton &&
+    e.target !== refs.yearButton;
+
+  if (currentFilterListItem && e.target !== refs.sortButton) {
+    refs.sortButton.style.color = '#000000';
+    clearContainer(refs.sortButton.nextElementSibling);
+  }
+
+  if (currentFilterListItem && e.target !== refs.genreButton) {
+    refs.genreButton.style.color = '#000000';
+    clearContainer(refs.genreButton.nextElementSibling);
+  }
+
+  if (currentFilterListItem && e.target !== refs.yearButton) {
+    refs.yearButton.style.color = '#000000';
+    clearContainer(refs.yearButton.nextElementSibling);
   }
 }
